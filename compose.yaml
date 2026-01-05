@@ -1,0 +1,16 @@
+# Development environment: Postgres and Jupyter, bound to 127.0.0.1 only.
+# The password comes from .env (copy .env.example); `docker compose up` refuses to start without it.
+services:
+  db:
+    image: postgres:18.6
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env (see .env.example)}
+    ports: ["127.0.0.1:5432:5432"]
+    volumes: [pgdata:/var/lib/postgresql]
+  notebook:
+    image: quay.io/jupyter/scipy-notebook:2026-09-21
+    ports: ["127.0.0.1:8888:8888"]
+    volumes: ["./:/home/jovyan/work"]
+
+volumes:
+  pgdata:

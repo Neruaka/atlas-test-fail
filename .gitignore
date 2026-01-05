@@ -1,0 +1,17 @@
+# Environment and caches
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+coverage.xml
+htmlcov/
+
+# Secrets: only .env.example is committed
+.env
+
+# Data and outputs: downloaded and recomputed, never committed
+data/
+out/
