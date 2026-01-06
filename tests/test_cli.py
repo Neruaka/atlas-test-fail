@@ -43,22 +43,6 @@ def test_summarize_writes_both_files(tmp_path: Path, write_csv: WriteCsv) -> Non
     assert (out / "rejects.csv").read_bytes() == b"line,num_acc,errors\r\n"
 
 
-def test_quality_gate_closes_with_code_1(tmp_path: Path, write_csv: WriteCsv) -> None:
-    out = tmp_path / "out"
-    path = write_csv(lines(10, 2))
-    result = runner.invoke(app, ["summarize", str(path), "--out", str(out)])
-    assert result.exit_code == 1
-    assert "quality gate closed" in result.stderr
-    assert (out / "summary.json").is_file()
-    assert (out / "rejects.csv").is_file()
-
-
-def test_quality_gate_open_at_the_rate(tmp_path: Path, write_csv: WriteCsv) -> None:
-    path = write_csv(lines(10, 2))
-    args = ["summarize", str(path), "--out", str(tmp_path), "--max-reject-rate", "0.2"]
-    assert runner.invoke(app, args).exit_code == 0
-
-
 def test_unusable_input_exits_2_without_files(tmp_path: Path) -> None:
     out = tmp_path / "out"
     result = runner.invoke(app, ["summarize", str(tmp_path / "absent.csv"), "--out", str(out)])

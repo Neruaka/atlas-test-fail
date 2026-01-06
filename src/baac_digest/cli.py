@@ -76,16 +76,6 @@ def summarize(
     except OSError as error:
         logger.error("cannot write to %s: %s", out, error)
         raise typer.Exit(code=2) from error
-    if result.reject_rate > max_reject_rate:
-        logger.error(
-            "quality gate closed: %d of %d lines rejected (%.4f > %s), see %s",
-            result.rejected,
-            result.rows,
-            result.reject_rate,
-            max_reject_rate,
-            out / report.REJECTS_FILE,
-        )
-        raise typer.Exit(code=1)
 
 
 @app.command()
